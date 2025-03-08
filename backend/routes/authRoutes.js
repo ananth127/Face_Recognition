@@ -28,7 +28,8 @@ router.post("/register", async (req, res) => {
 // Login (Face Matching)
 router.post("/login", async (req, res) => {
   const { faceDescriptor } = req.body;
-
+  
+  console.log("faceDescriptor : ",faceDescriptor);
   if (!faceDescriptor) {
     return res.status(400).json({ message: "Face descriptor required!" });
   }
@@ -55,6 +56,9 @@ router.post("/login", async (req, res) => {
     if (bestMatch && bestDistance < 0.5) {
       // Update last active timestamp
       bestMatch.lastActive = new Date();
+      var date=new Date();
+      console.log("Time : ",date);
+      console.log("Name : ",bestMatch.username);
       await bestMatch.save();
 
       res.json({ 
