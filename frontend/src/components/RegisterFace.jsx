@@ -54,7 +54,7 @@ const RegisterFace = () => {
     try {
       const faceDescriptorArray = Array.from(detections.descriptor); // Convert to Array
 
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://face-recognition-wheat.vercel.app/api/auth/register", {
         username,
         faceDescriptor: faceDescriptorArray,
       });
