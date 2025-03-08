@@ -35,7 +35,6 @@ router.post("/login", async (req, res) => {
 
   try {
     const users = await User.find();
-
     if (users.length === 0) {
       return res.status(400).json({ message: "No registered faces found." });
     }
@@ -54,7 +53,15 @@ router.post("/login", async (req, res) => {
     });
 
     if (bestMatch && bestDistance < 0.5) {
-      res.json({ message: "✅ Face Matched!", username: bestMatch.username });
+      // Update last active timestamp
+      bestMatch.lastActive = new Date();
+      await bestMatch.save();
+
+      res.json({ 
+        message: "✅ Face Matched!", 
+        username: bestMatch.username, 
+        lastActive: bestMatch.lastActive 
+      });
     } else {
       res.status(401).json({ message: "❌ Face does not match!" });
     }
@@ -62,5 +69,6 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Error processing face data", error: err });
   }
 });
+
 
 module.exports = router;
